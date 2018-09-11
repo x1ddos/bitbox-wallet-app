@@ -19,6 +19,7 @@ RUN /tmp/docker_install.sh
 
 ENV GOPATH /opt/go
 ENV GOROOT /opt/go_dist/go
+ENV GO111MODULE on
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 
 ADD Makefile /tmp/

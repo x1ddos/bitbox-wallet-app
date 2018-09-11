@@ -14,17 +14,17 @@
 
 SHELL:=/bin/bash
 WEBROOT:=`pwd`/frontends/web
+# Requires go1.11+; see go help modules.
+export GO111MODULE=on
 
 catch:
 	@echo "Choose a make target."
 envinit:
 	go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/stretchr/testify # needed for mockery
 	go get -u github.com/vektra/mockery/cmd/mockery
 	go get golang.org/x/tools/cmd/goimports
 	go get -u github.com/jteeuwen/go-bindata/...
-# This must be run in $GOPATH/src/github.com/digitalbitbox/bitbox-wallet-app
 osx-init:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	brew install yarn

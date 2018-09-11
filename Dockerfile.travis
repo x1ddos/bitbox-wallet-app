@@ -15,6 +15,7 @@
 FROM bitbox-wallet-dev
 ENV GOPATH /opt/go
 ENV GOROOT /opt/go_dist/go
+ENV GO111MODULE on
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 ENV PATH /opt/qt5/bin:$PATH
 

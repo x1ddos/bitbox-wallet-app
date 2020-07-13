@@ -15,13 +15,13 @@ addons:
 
 jobs:
   include:
-    - stage: Linux
-      os: linux
-      script:
-        - ./scripts/travis-ci.sh ci
-        - ./scripts/travis-ci.sh android
-        - ./scripts/travis-ci.sh qt-linux
-        - ./scripts/travis_upload_nightlies.sh
+    #- stage: Linux
+    #  os: linux
+    #  script:
+    #    - ./scripts/travis-ci.sh ci
+    #    - ./scripts/travis-ci.sh android
+    #    - ./scripts/travis-ci.sh qt-linux
+    #    - ./scripts/travis_upload_nightlies.sh
     - stage: macOS
       os: osx
       script:

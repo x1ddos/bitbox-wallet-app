@@ -29,7 +29,46 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
     brew outdated go || brew upgrade go
     go version
-    brew install qt
+    # Build Qt from source.
+    # https://doc-snapshots.qt.io/qt5-5.12/macos-building.html
+    curl -sSL -o qt-src-5.11.3.tar.xz https://download.qt.io/new_archive/qt/5.11/5.11.3/single/qt-everywhere-src-5.11.3.tar.xz
+    tar -xf qt-src-5.11.3.tar.xz
+    pushd qt-everywhere-src-5.11.3
+    # https://doc-snapshots.qt.io/qt5-5.12/configure-options.html
+    #./configure -list-features
+    ./configure -prefix $PWD/../qt5.11.3 \
+        -release \
+        -opensource \
+        -confirm-license \
+        -no-compile-examples \
+        -no-cups \
+        -no-gtk \
+        -no-feature-futimens \
+        -skip qt3d \
+        -skip qtactiveqt \
+        -skip qtandroidextras \
+        -skip qtcanvas3d \
+        -skip qtcharts \
+        -skip qtconnectivity \
+        -skip qtdatavis3d \
+        -skip qtdoc \
+        -skip qtgamepad \
+        -skip qtgraphicaleffects \
+        -skip qtlocation \
+        -skip qtpurchasing \
+        -skip qtspeech \
+        -skip qtvirtualkeyboard \
+        -skip qtwayland \
+        -skip qtwinextras \
+        -skip qtx11extras
+    make -s
+    make -j1 install
+    popd
+    du -sh qt5.11.3
+    ls -lh qt5.11.3
+    export PATH="$PWD/qt5.11.3/bin:$PATH"
+    export LDFLAGS="-L$PWD/qt5.11.3/lib"
+    export CPPFLAGS="-I$PWD/qt5.11.3/include"
     # Install yarn only if it isn't already.
     # GitHub runners already have node and yarn installed which makes homebrew
     # fail due to conflicting files.
@@ -37,9 +76,6 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew install nvm
     source /usr/local/opt/nvm/nvm.sh
     nvm install 10.16.3 # install this node version
-    export PATH="/usr/local/opt/qt/bin:$PATH"
-    export LDFLAGS="-L/usr/local/opt/qt/lib"
-    export CPPFLAGS="-I/usr/local/opt/qt/include"
     export GOPATH=~/go/
     export PATH=$PATH:~/go/bin
     mkdir -p $GOPATH/$(dirname $GO_SRC_DIR)
